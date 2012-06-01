@@ -36,7 +36,6 @@ class DebouncedRunnable implements Runnable {
             logger.info("debouncer.call go");
             isRequestedAfterRun = false;
             task = new Timer();
-            final Runnable self = this;
             task.schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -46,7 +45,7 @@ class DebouncedRunnable implements Runnable {
                     if (isRequestedAfterRun) {
                         isRequestedAfterRun = false;
                         logger.info("debouncer.call again");
-                        self.run();
+                        DebouncedRunnable.this.run();
                     }
                 }
             }, this.delay);
