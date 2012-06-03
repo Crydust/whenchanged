@@ -19,7 +19,6 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -53,27 +52,25 @@ import java.util.logging.Logger;
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-
 /**
  * Example to watch a directory (or tree) for changes to files.
- * @see http://docs.oracle.com/javase/tutorial/essential/io/examples/WatchDir.java
+ *
+ * @see
+ * http://docs.oracle.com/javase/tutorial/essential/io/examples/WatchDir.java
  */
 public class FolderListener {
 
     private static final Logger logger = Logger.getLogger(FolderListener.class.getName());
-    
     private final Runnable callback;
     private final List<String> folders;
-    
     private final WatchService watcher;
-    private final Map<WatchKey,Path> keys;
+    private final Map<WatchKey, Path> keys;
     private final boolean recursive;
     private final boolean trace;
 
     @SuppressWarnings("unchecked")
     private static <T> WatchEvent<T> cast(WatchEvent<?> event) {
-        return (WatchEvent<T>)event;
+        return (WatchEvent<T>) event;
     }
 
     /**
@@ -103,8 +100,7 @@ public class FolderListener {
         Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
-                throws IOException
-            {
+                    throws IOException {
                 register(dir);
                 return FileVisitResult.CONTINUE;
             }
@@ -131,7 +127,7 @@ public class FolderListener {
                 continue;
             }
 
-            for (WatchEvent<?> event: key.pollEvents()) {
+            for (WatchEvent<?> event : key.pollEvents()) {
                 WatchEvent.Kind kind = event.kind();
 
                 // TBD - provide example of how OVERFLOW event is handled
@@ -146,7 +142,7 @@ public class FolderListener {
 
                 // print out event
                 logger.info(String.format("%s: %s", event.kind().name(), child));
-                
+
                 // if directory is created, and watching recursively, then
                 // register it and its sub-directories
                 if (recursive && (kind == ENTRY_CREATE)) {
@@ -170,12 +166,12 @@ public class FolderListener {
                     break;
                 }
             }
-            
+
             // hook method
             callback.run();
         }
     }
-    
+
     public FolderListener(Runnable callback, final List<String> folders) throws IOException {
         this.trace = true;
         this.recursive = true;
@@ -184,8 +180,8 @@ public class FolderListener {
         this.keys = new HashMap<>();
         this.watcher = FileSystems.getDefault().newWatchService();
     }
-    
-    public void run(){
+
+    public void run() {
         try {
             for (String folder : folders) {
                 Path path = Paths.get(folder).toAbsolutePath();
@@ -205,7 +201,6 @@ public class FolderListener {
             logger.warning("oops");
         }
         this.processEvents();
-        
+
     }
-    
 }

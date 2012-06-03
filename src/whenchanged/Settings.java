@@ -30,7 +30,7 @@ public class Settings {
         folders = new ArrayList<>();
     }
 
-    private static List<String> getList(final String sizePropertyName, final String itemPropertyName, final Properties properties){
+    private static List<String> getList(final String sizePropertyName, final String itemPropertyName, final Properties properties) {
         int size = Integer.valueOf(properties.getProperty(sizePropertyName));
         List<String> items = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
@@ -38,14 +38,14 @@ public class Settings {
         }
         return items;
     }
-    
-    private static void setList(final List<String> items, final String sizePropertyName, final String itemPropertyName, final Properties properties){
+
+    private static void setList(final List<String> items, final String sizePropertyName, final String itemPropertyName, final Properties properties) {
         properties.setProperty(sizePropertyName, Integer.toString(items.size()));
         for (int i = 0; i < items.size(); i++) {
             properties.setProperty(String.format(itemPropertyName, i), items.get(i));
         }
     }
-    
+
     public Settings load() {
         Properties properties = new Properties();
         try {
@@ -100,9 +100,8 @@ public class Settings {
     public List<String> getCommand() {
         return Collections.unmodifiableList(command);
     }
-    
+
     public List<String> getFolders() {
         return Collections.unmodifiableList(folders);
     }
-    
 }

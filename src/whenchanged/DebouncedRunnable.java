@@ -5,7 +5,7 @@ import java.util.TimerTask;
 import java.util.logging.Logger;
 
 class DebouncedRunnable implements Runnable {
-    
+
     private static final Logger logger = Logger.getLogger(DebouncedRunnable.class.getName());
     private Runnable callback;
     private long delay;
@@ -14,7 +14,7 @@ class DebouncedRunnable implements Runnable {
     private boolean isRequestedAfterRun;
 
     /**
-     * 
+     *
      * @param callback to run after there haven't been any runs for a while
      * @param delay how long in milliseconds to wait before running callback
      */
@@ -27,13 +27,12 @@ class DebouncedRunnable implements Runnable {
 
     @Override
     public void run() {
-        if (task != null) { 
+        if (task != null) {
             task.cancel();
         }
-        if (isRunning){
+        if (isRunning) {
             isRequestedAfterRun = true;
-        }else{
-            logger.info("debouncer.call go");
+        } else {
             isRequestedAfterRun = false;
             task = new Timer();
             task.schedule(new TimerTask() {

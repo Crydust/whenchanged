@@ -11,7 +11,7 @@ Short way of running WhenChanged:
 
     java -jar whenchanged.jar
 
-Running WhenChanged with a config file that isn't named whenchanged.properties:
+Running WhenChanged with a config file that isn't named `whenchanged.properties`:
 
     java -jar whenchanged.jar my.properties
 
@@ -22,7 +22,7 @@ Setting the logging config file:
 Configuration
 -------------
 
-A file with the name whenchanged.properties must be present in the same folder as the whenchanged.jar file.
+Unless youspecify the config file a file with the name `whenchanged.properties` should be present in the same folder as the whenchanged.jar file.
 This is an example.
 
     delay=2000
@@ -33,3 +33,11 @@ This is an example.
     folders.size=2
     folders.0=C\:/Projects/test/java/whenchanged/src
     folders.1=C\:/Projects/test/java/whenchanged/test
+
+Warning
+-------
+
+Running batch files that contain a `pause` statement will block WhenChanged from running. I suggest creating a wrapper batch file to echo a newline into them like in this example below.
+
+    @ECHO OFF
+    ECHO. | CALL %~dp0.\WillRunPause.bat
