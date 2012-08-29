@@ -19,6 +19,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -117,13 +118,14 @@ public class FolderListener {
             WatchKey key;
             try {
                 key = watcher.take();
-            } catch (InterruptedException x) {
+            } catch (InterruptedException ex) {
+                logger.log(Level.WARNING, "watcher.take was interupted", ex);
                 return;
             }
 
             Path dir = keys.get(key);
             if (dir == null) {
-                System.err.println("WatchKey not recognized!!");
+                logger.log(Level.SEVERE, "WatchKey not recognized!!");
                 continue;
             }
 
@@ -151,7 +153,7 @@ public class FolderListener {
                             registerAll(child);
                         }
                     } catch (IOException x) {
-                        // ignore to keep sample readbale
+                        logger.log(Level.WARNING, "ignore to keep sample readable", x);
                     }
                 }
             }
@@ -198,7 +200,7 @@ public class FolderListener {
                 }
             }
         } catch (IOException ex) {
-            logger.warning("oops");
+            logger.log(Level.WARNING, "oops", ex);
         }
         this.processEvents();
 

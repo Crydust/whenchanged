@@ -14,6 +14,7 @@ public class Settings {
 
     private static final Logger logger = Logger.getLogger(Settings.class.getName());
     private static String DELAY_PROPERTYNAME = "delay";
+    private static String REDIRECT_ERROR_STREAM = "redirectErrorStream";
     private static String COMMAND_DIR_PROPERTYNAME = "command.dir";
     private static String COMMAND_SIZE_PROPERTYNAME = "command.size";
     private static String COMMAND_ITEM_PROPERTYNAME = "command.%d";
@@ -21,6 +22,7 @@ public class Settings {
     private static String FOLDER_ITEM_PROPERTYNAME = "folders.%d";
     private final String filename;
     private long delay;
+    private boolean redirectErrorStream;
     private String commandDir;
     private List<String> command;
     private List<String> folders;
@@ -55,6 +57,8 @@ public class Settings {
             }
             delay = Long.parseLong(properties.getProperty(DELAY_PROPERTYNAME));
             logger.config(String.format("%s = %d", DELAY_PROPERTYNAME, delay));
+            redirectErrorStream = Boolean.parseBoolean(properties.getProperty(REDIRECT_ERROR_STREAM));
+            logger.config(String.format("%s = %s", REDIRECT_ERROR_STREAM, redirectErrorStream));
             commandDir = properties.getProperty(COMMAND_DIR_PROPERTYNAME);
             logger.config(String.format("%s = %s", COMMAND_DIR_PROPERTYNAME, commandDir));
             command = getList(COMMAND_SIZE_PROPERTYNAME, COMMAND_ITEM_PROPERTYNAME, properties);
@@ -76,6 +80,7 @@ public class Settings {
     public Settings store() {
         Properties properties = new Properties();
         properties.setProperty(DELAY_PROPERTYNAME, Long.toString(delay));
+        properties.setProperty(REDIRECT_ERROR_STREAM, Boolean.toString(redirectErrorStream));
         properties.setProperty(COMMAND_DIR_PROPERTYNAME, commandDir);
         setList(command, COMMAND_SIZE_PROPERTYNAME, COMMAND_ITEM_PROPERTYNAME, properties);
         setList(folders, FOLDER_SIZE_PROPERTYNAME, FOLDER_ITEM_PROPERTYNAME, properties);
@@ -91,6 +96,10 @@ public class Settings {
 
     public long getDelay() {
         return delay;
+    }
+
+    public boolean getRedirectErrorStream() {
+        return redirectErrorStream;
     }
 
     public String getCommandDir() {
